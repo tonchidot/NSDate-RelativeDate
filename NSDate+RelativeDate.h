@@ -3,7 +3,7 @@
 //  NSDate+RelativeDate (Released under MIT License)
 //
 //  Created by digdog on 9/23/09.
-//  Copyright (c) 2009 Ching-Lan 'digdog' HUANG.
+//  Copyright (c) 2009 Ching-Lan 'digdog' HUANG. http://digdog.tumblr.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
