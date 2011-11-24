@@ -37,7 +37,7 @@
 
 	NSDateComponents *components = [calendar components:unitFlags fromDate:self toDate:[NSDate date] options:0];
 
-	NSArray *selectorNames = [NSArray arrayWithObjects:@"year", @"month", @"week", @"day", @"hour", @"minute", @"second", nil];
+	NSArray *selectorNames = [NSArray arrayWithObjects:@"year", @"month", @"week", @"day", @"hour", @"minute", nil];
 
 	for (NSString *selectorName in selectorNames) {
 		SEL currentSelector = NSSelectorFromString(selectorName);
@@ -52,11 +52,13 @@
 		[currentInvocation getReturnValue:&relativeNumber];
 
 		if (relativeNumber && relativeNumber != INT32_MAX) {
-			return [NSString stringWithFormat:@"%d%@", relativeNumber, NSLocalizedString([selectorName substringToIndex:1], nil)];
+            if ( [selectorName isEqualToString:@"minute"] && relativeNumber < 5 )
+                continue;
+			return [NSString stringWithFormat:@"%d%@", relativeNumber, NSLocalizedString([selectorName substringToIndex:2], nil)];
 		}
 	}
 
-	return @"now";
+	return NSLocalizedString(@"now", nil);
 }
 
 @end
