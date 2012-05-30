@@ -26,10 +26,16 @@
 
 #import "NSDate+RelativeDate.h"
 
+static NSString * const kResourceFormat = @"NSDate+RelativeDate:%@";
+static const NSInteger kDefaultThresholdMinutesToTreatAsNow = 1;
 
 @implementation NSDate (RelativeDate)
 
 - (NSString *)relativeDate {
+    return [self relativeDateWithThresholdMinutesOfNow:kDefaultThresholdMinutesToTreatAsNow];
+}
+
+- (NSString *)relativeDateWithThresholdMinutesOfNow:(NSUInteger)thresholdMinutes {
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 
@@ -52,13 +58,14 @@
 		[currentInvocation getReturnValue:&relativeNumber];
 
 		if (relativeNumber && relativeNumber != INT32_MAX) {
-            if ( [selectorName isEqualToString:@"minute"] && relativeNumber < 5 )
-                continue;
-			return [NSString stringWithFormat:@"%d%@", relativeNumber, NSLocalizedString([selectorName substringToIndex:2], nil)];
+			if ( [selectorName isEqualToString:@"minute"] && relativeNumber < thresholdMinutes )
+				break;
+			NSString *localizedDateFormat = NSLocalizedString(([NSString stringWithFormat:kResourceFormat, selectorName]), nil);
+			return [NSString stringWithFormat:localizedDateFormat, relativeNumber];
 		}
 	}
 
-	return NSLocalizedString(@"now", nil);
+	return NSLocalizedString(([NSString stringWithFormat:kResourceFormat, @"now"]), nil);
 }
 
 @end
